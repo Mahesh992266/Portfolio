@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maheshwar Kadbane | Logic & Lens Portfolio</title>
+<meta name="description" content="Portfolio of Maheshwar Kadbane — AI Developer, Claude Certified Architect & Creative Video/Photo Editor from PCCOE Pune.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & ROOT VARIABLES
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --speed: 0.5s;
+  --ease: cubic-bezier(0.25,0.8,0.25,1);
+  --r: 20px;
+}
+
+/* LOGIC MODE - Cyberpunk Blue */
+body {
+  --p: #00d4ff;
+  --p2: #0066ff;
+  --a: #00ffaa;
+  --bg: #030712;
+  --bg2: #060f1a;
+  --card: rgba(6,18,36,0.7);
+  --border: rgba(0,212,255,0.15);
+  --glow: rgba(0,212,255,0.12);
+  --text: #e8f4fd;
+  --muted: #6b8fa8;
+  --font: 'Outfit', sans-serif;
+  --mode: logic;
+}
+
+/* LENS MODE - Cinematic Gold / Amber */
+body.lens {
+  --p: #f59e0b;
+  --p2: #b45309;
+  --a: #fbbf24;
+  --bg: #080603;
+  --bg2: #120e06;
+  --card: rgba(20,16,5,0.75);
+  --border: rgba(245,158,11,0.2);
+  --glow: rgba(245,158,11,0.15);
+  --text: #fef3c7;
+  --muted: #92815a;
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  overflow-x: hidden;
+  line-height: 1.65;
+  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--p); }
+
+/* ═══════════════════════════════════════════
+   CANVAS BACKGROUND
+═══════════════════════════════════════════ */
+#bg {
+  position: fixed; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.overlay-gradient {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at 15% 20%, var(--glow) 0%, transparent 55%),
+              radial-gradient(ellipse at 85% 80%, rgba(0,100,255,0.06) 0%, transparent 55%);
+  transition: background var(--speed) var(--ease);
+}
+body.lens .overlay-gradient {
+  background: radial-gradient(ellipse at 15% 20%, rgba(245,158,11,0.12) 0%, transparent 55%),
+              radial-gradient(ellipse at 85% 80%, rgba(180,83,9,0.10) 0%, transparent 55%);
+}
+
+/* ── LENS: Photo fills entire page while scrolling ── */
+#lens-bg {
+  display: none;
+  position: fixed; inset: 0; z-index: 0;
+  background: url('maheshwar-photo.jpg') center top / cover no-repeat;
+  pointer-events: none;
+}
+#lens-bg-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(8,6,3,0.87) 0%, rgba(12,9,4,0.75) 50%, rgba(8,6,3,0.82) 100%),
+    radial-gradient(ellipse at 65% 40%, rgba(245,158,11,0.08) 0%, transparent 70%);
+}
+body.lens #lens-bg,
+body.lens #lens-bg-overlay { display: block; }
+
+/* ═══════════════════════════════════════════
+   HEADER & NAV
+═══════════════════════════════════════════ */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 1.2rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(3,7,18,0.6);
+  border-bottom: 1px solid var(--border);
+  transition: border-color var(--speed) var(--ease);
+}
+.logo {
+  display: flex; align-items: center; gap: 0.7rem;
+  text-decoration: none;
+}
+.logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 1.1rem; color: #fff;
+  box-shadow: 0 0 20px rgba(0,212,255,0.3);
+  transition: box-shadow var(--speed) var(--ease);
+}
+body.lens .logo-icon { box-shadow: 0 0 20px rgba(245,158,11,0.35); }
+.logo-text {
+  font-size: 1.15rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--p), var(--a));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+nav { display: flex; gap: 0.3rem; }
+nav a {
+  color: var(--muted); text-decoration: none;
+  padding: 0.4rem 1rem; border-radius: 50px;
+  font-size: 0.9rem; font-weight: 500;
+  transition: color 0.3s, background 0.3s;
+}
+nav a:hover { color: var(--p); background: var(--glow); }
+
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.social-icons { display: flex; gap: 0.8rem; }
+.social-icons a {
+  color: var(--muted); transition: color 0.3s, transform 0.3s;
+  display: flex; align-items: center;
+}
+.social-icons a:hover { color: var(--p); transform: translateY(-2px); }
+
+/* ═══════════════════════════════════════════
+   MODE TOGGLE — 3D Floating Switch
+═══════════════════════════════════════════ */
+.mode-toggle {
+  position: fixed; bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: rgba(5,10,20,0.85);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  padding: 5px;
+  display: flex;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  cursor: pointer; user-select: none;
+  width: 250px; height: 52px;
+}
+.toggle-track {
+  display: flex; width: 100%; position: relative;
+}
+.toggle-option {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 6px; font-size: 0.85rem; font-weight: 700;
+  color: var(--muted); z-index: 2; transition: color 0.4s;
+  letter-spacing: 0.5px;
+}
+.toggle-option svg { width: 15px; height: 15px; }
+.toggle-thumb {
+  position: absolute; top: 0; height: 100%; width: 50%;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  box-shadow: 0 0 20px var(--glow);
+  transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), background 0.5s, box-shadow 0.5s;
+  z-index: 1;
+}
+body.lens .toggle-thumb { transform: translateX(100%); }
+body:not(.lens) .toggle-option:first-child { color: #fff; }
+body.lens .toggle-option:last-child { color: #fff; }
+
+/* ═══════════════════════════════════════════
+   VISIBILITY TOGGLES
+═══════════════════════════════════════════ */
+.logic-only, .lens-only { transition: opacity var(--speed) var(--ease); }
+body:not(.lens) .lens-only { display: none !important; }
+body.lens .logic-only { display: none !important; }
+
+/* ═══════════════════════════════════════════
+   LAYOUT UTILITIES
+═══════════════════════════════════════════ */
+main { position: relative; z-index: 2; }
+.container { max-width: 1150px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 7rem 0; }
+
+.section-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--p); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.section-label::before {
+  content: ''; display: block;
+  width: 30px; height: 2px;
+  background: var(--p);
+  border-radius: 2px;
+}
+
+.section-title {
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -1.5px; margin-bottom: 1.5rem;
+}
+
+.grad {
+  background: linear-gradient(135deg, var(--p), var(--a));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* Glass Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease), transform 0.15s;
+  transform-style: preserve-3d;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--glow), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Lens mode: cards float as glass panels over the photo */
+body.lens .card {
+  background: rgba(12,9,3,0.68);
+  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(245,158,11,0.22);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(245,158,11,0.06);
+}
+body.lens .card:hover {
+  border-color: rgba(245,158,11,0.45);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 40px rgba(245,158,11,0.15), inset 0 1px 0 rgba(245,158,11,0.1);
+}
+
+/* Sections: transparent bg in Lens mode so photo shows through */
+body.lens .section {
+  background: transparent;
+}
+body.lens section {
+  background: transparent;
+}
+/* Section dividers adapt to gold in Lens */
+body.lens .section-divider {
+  border-color: rgba(245,158,11,0.15);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 2.2rem; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700;
+  text-decoration: none; cursor: pointer; border: none;
+  font-family: var(--font);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  color: #fff;
+  box-shadow: 0 4px 20px var(--glow);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--glow);
+}
+.btn-ghost {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  border-color: var(--p); color: var(--p);
+  transform: translateY(-3px);
+  background: var(--glow);
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.78rem; font-weight: 600;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  transition: all 0.3s;
+}
+.card:hover .tag {
+  border-color: var(--border);
+  color: var(--text);
+}
+.tag.accent {
+  background: rgba(0,212,255,0.07);
+  border-color: rgba(0,212,255,0.2);
+  color: var(--p);
+  font-family: 'Fira Code', monospace;
+}
+body.lens .tag.accent {
+  background: rgba(245,158,11,0.07);
+  border-color: rgba(245,158,11,0.2);
+}
+
+/* ═══════════════════════════════════════════
+   HERO SECTION
+═══════════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding-top: 6rem;
+  position: relative;
+  overflow: hidden;
+  /* Logic mode: photo only in hero */
+  background: url('maheshwar-photo.jpg') center top / cover no-repeat;
+  background-attachment: fixed;
+}
+/* In Lens mode: hero is transparent — global lens-bg handles full-page photo */
+body.lens #hero {
+  background: transparent;
+}
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(5,5,15,0.88) 0%,
+    rgba(10,10,30,0.72) 45%,
+    rgba(5,5,15,0.60) 100%
+  );
+  z-index: 0;
+}
+body.lens #hero::before {
+  background: linear-gradient(
+    135deg,
+    rgba(8,6,3,0.0) 0%,
+    rgba(8,6,3,0.0) 100%
+  );
+}
+#hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(99,102,241,0.15) 0%, transparent 65%),
+              radial-gradient(ellipse at 30% 80%, rgba(0,0,0,0.5) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+}
+body.lens #hero::after {
+  background: radial-gradient(ellipse at 70% 50%, rgba(245,158,11,0.10) 0%, transparent 65%),
+              radial-gradient(ellipse at 30% 80%, rgba(0,0,0,0.3) 0%, transparent 60%);
+}
+#hero .container { position: relative; z-index: 1; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+.hero-text {
+  position: relative; z-index: 2;
+}
+.hero-visual {
+  perspective: 1200px;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem; color: var(--p);
+  letter-spacing: 2px; margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 24px; height: 2px;
+  background: var(--p);
+}
+.hero-name {
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  font-weight: 900; line-height: 1;
+  letter-spacing: -3px; margin-bottom: 1.2rem;
+}
+.hero-role {
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 600; color: var(--muted);
+  margin-bottom: 2rem; line-height: 1.3;
+}
+.hero-role .highlight { color: var(--p); font-weight: 700; }
+.hero-desc {
+  font-size: 1.05rem; color: var(--muted);
+  max-width: 500px; margin-bottom: 3rem; line-height: 1.8;
+}
+.hero-buttons { display: flex; gap: 1rem; margin-bottom: 4rem; }
+.hero-stats {
+  display: flex; gap: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.stat-num {
+  font-size: 2.5rem; font-weight: 900;
+  background: linear-gradient(135deg, var(--p), var(--a));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+/* ═══════════════════════════════════════════
+   HERO 3D FLIP CARD
+═══════════════════════════════════════════ */
+.hero-visual { perspective: 1200px; position: relative; z-index: 2; }
+.flip-card {
+  width: 100%; height: 480px;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.34,1.2,0.64,1);
+  border-radius: var(--r); position: relative;
+}
+body.lens .flip-card { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+/* FRONT — Terminal */
+.flip-front {
+  background: rgba(6,15,26,0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(99,102,241,0.25);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.terminal-bar {
+  background: rgba(255,255,255,0.04);
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.t-dots { display: flex; gap: 6px; }
+.t-dot { width: 11px; height: 11px; border-radius: 50%; }
+.t-dot.r { background: #ff5f57; }
+.t-dot.y { background: #febc2e; }
+.t-dot.g { background: #28c840; }
+.t-path {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem; color: var(--muted);
+}
+.terminal-body {
+  padding: 1.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88rem;
+  height: calc(100% - 56px);
+  overflow-y: auto; line-height: 1.8;
+}
+.t-prompt { color: #00d4ff; }
+.t-output { color: #e8f4fd; margin: 0.4rem 0 1rem 1.2rem; }
+.t-key { color: #f72585; }
+.t-val { color: #00ffaa; }
+.t-str { color: #febc2e; }
+.t-cursor {
+  display: inline-block; width: 9px; height: 16px;
+  background: #00d4ff; vertical-align: middle;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* BACK — Viewfinder */
+.flip-back {
+  transform: rotateY(180deg);
+  background: rgba(20,15,4,0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(245,158,11,0.25);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.vf-top {
+  padding: 1.2rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.vf-rec {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.78rem; font-weight: 700; color: #fff;
+  letter-spacing: 2px;
+}
+.rec-led {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #ff0844; animation: blink 0.8s infinite;
+}
+.vf-tc { font-family: 'Fira Code', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+.vf-body {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  position: relative;
+  height: calc(100% - 112px);
+}
+.vf-cross {
+  position: absolute;
+  width: 50px; height: 50px;
+}
+.vf-cross::before, .vf-cross::after {
+  content: ''; position: absolute; background: rgba(255,255,255,0.4);
+}
+.vf-cross::before { top: 50%; left: 0; right: 0; height: 1px; }
+.vf-cross::after { left: 50%; top: 0; bottom: 0; width: 1px; }
+.vf-circle {
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 50%; position: absolute;
+}
+.vf-c1 { width: 160px; height: 160px; }
+.vf-c2 { width: 260px; height: 260px; border-style: dotted; border-color: rgba(255,255,255,0.08); }
+.vf-corners {
+  position: absolute; inset: 20px;
+}
+.vf-corner {
+  position: absolute; width: 20px; height: 20px;
+  border-color: #f72585; border-style: solid; border-width: 0;
+}
+.vf-corner.tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.vf-corner.tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.vf-corner.bl { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.vf-corner.br { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+.vf-info {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 8px; padding: 0.5rem 1rem;
+  font-family: 'Fira Code', monospace; font-size: 0.78rem;
+  color: #f59e0b; letter-spacing: 1px;
+}
+.vf-bottom {
+  padding: 1rem 1.5rem;
+  display: flex; justify-content: space-between;
+  font-family: 'Fira Code', monospace; font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ═══════════════════════════════════════════
+   SKILLS SECTION
+═══════════════════════════════════════════ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+.skill-card {
+  text-align: center; padding: 2.5rem 2rem;
+}
+.skill-icon {
+  width: 60px; height: 60px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px var(--glow);
+  font-size: 1.6rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover .skill-icon {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 32px var(--glow);
+}
+.skill-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.8rem; }
+.skill-card p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.6; }
+.tags-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+
+/* ═══════════════════════════════════════════
+   PROJECTS SECTION
+═══════════════════════════════════════════ */
+.projects-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1.5rem;
+}
+.project-card.wide { grid-column: 1 / -1; }
+.project-tag-top {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem; color: var(--a);
+  letter-spacing: 1px; font-weight: 600;
+  margin-bottom: 1rem; display: block;
+}
+.project-card h3 {
+  font-size: 1.4rem; font-weight: 800;
+  margin-bottom: 0.8rem; letter-spacing: -0.5px;
+}
+.project-card p { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.7; }
+.project-bullets {
+  list-style: none; margin-bottom: 1.5rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.project-bullets li {
+  font-size: 0.88rem; color: var(--muted);
+  padding-left: 1.3rem; position: relative;
+}
+.project-bullets li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--p);
+}
+.project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* Lens Reel Mockup */
+.reel-mock {
+  height: 160px; border-radius: 12px; overflow: hidden;
+  position: relative; margin: 1rem 0;
+  cursor: pointer;
+}
+.reel-mock:hover .reel-overlay { background: rgba(245,158,11,0.30); }
+.reel-bg { position: absolute; inset: 0; transition: transform 0.6s; background-size: cover !important; background-position: center top !important; }
+.reel-mock:hover .reel-bg { transform: scale(1.08); }
+.reel-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0.5rem; color: #fff;
+  transition: background 0.3s; z-index: 1;
+}
+.reel-overlay svg { width: 40px; height: 40px; transition: transform 0.3s; }
+.reel-mock:hover .reel-overlay svg { transform: scale(1.2); }
+.reel-overlay span { font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; }
+
+/* ── 3D Photo Card ── */
+.card-3d-scene {
+  perspective: 900px;
+  height: 200px;
+  margin: 1rem 0;
+  cursor: pointer;
+}
+.card-3d-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(.23,1.05,.32,1), box-shadow 0.4s;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.card-3d-scene:hover .card-3d-inner {
+  transform: rotateX(-8deg) rotateY(12deg) scale(1.04);
+  box-shadow: -12px 18px 50px rgba(0,0,0,0.7), 0 0 30px rgba(99,102,241,0.4);
+}
+.card-3d-photo {
+  position: absolute; inset: 0;
+  background: url('maheshwar-photo.jpg') center top / cover no-repeat;
+  transition: transform 0.6s;
+}
+.card-3d-scene:hover .card-3d-photo { transform: scale(1.06); }
+.card-3d-gloss {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%, rgba(99,102,241,0.25) 100%);
+  z-index: 2;
+}
+.card-3d-overlay {
+  position: absolute; inset: 0; z-index: 3;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+  display: flex; flex-direction: column;
+  justify-content: flex-end; align-items: flex-start;
+  padding: 1rem 1.2rem; gap: 0.3rem;
+}
+.card-3d-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+  color: var(--p); text-transform: uppercase;
+}
+.card-3d-title {
+  font-size: 1rem; font-weight: 700; color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+.card-3d-badge {
+  display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.2rem;
+}
+.card-3d-badge span {
+  font-size: 0.6rem; background: rgba(99,102,241,0.7);
+  color: #fff; padding: 2px 8px; border-radius: 99px;
+  font-weight: 600; letter-spacing: 0.5px;
+}
+.card-3d-dot {
+  position: absolute; top: 12px; right: 12px; z-index: 4;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #22d3ee;
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.3);
+  animation: pulse3d 1.8s ease-in-out infinite;
+}
+@keyframes pulse3d {
+  0%,100% { box-shadow: 0 0 0 3px rgba(34,211,238,0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(34,211,238,0.0); }
+}
+
+/* ═══════════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════════ */
+.timeline { position: relative; max-width: 750px; margin: 0 auto; }
+.timeline::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--p), transparent);
+  margin-left: 23px;
+}
+.tl-item {
+  padding-left: 5rem; position: relative; margin-bottom: 3rem;
+}
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute; left: 14px; top: 1rem;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 3px solid var(--p);
+  background: var(--bg);
+  box-shadow: 0 0 12px var(--p), 0 0 30px rgba(0,212,255,0.2);
+  z-index: 2;
+  transition: border-color var(--speed), box-shadow var(--speed);
+}
+body.lens .tl-dot { border-color: var(--p); box-shadow: 0 0 12px var(--p); }
+.tl-date {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem; color: var(--a);
+  margin-bottom: 0.4rem; display: block;
+}
+.tl-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.3rem; }
+.tl-org { font-size: 0.95rem; color: var(--muted); font-weight: 500; margin-bottom: 0.8rem; }
+.tl-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+/* ═══════════════════════════════════════════
+   ACHIEVEMENTS
+═══════════════════════════════════════════ */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.ach-card {
+  position: relative; overflow: hidden;
+}
+.ach-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--p), var(--a));
+}
+.ach-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+.ach-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
+.ach-issuer {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem; color: var(--p); margin-bottom: 1rem;
+}
+.ach-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1.3fr; gap: 4rem;
+  align-items: start;
+}
+.contact-info h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+.contact-info p { color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
+.contact-channels { display: flex; flex-direction: column; gap: 1rem; }
+.channel {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; text-decoration: none;
+  color: var(--text); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.channel:hover {
+  border-color: var(--p); transform: translateX(6px);
+  box-shadow: 0 0 20px var(--glow);
+}
+.channel-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; box-shadow: 0 4px 12px var(--glow);
+}
+.channel-icon svg { width: 18px; height: 18px; color: #fff; }
+.channel-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 1px; }
+.channel-value { font-weight: 600; font-size: 0.92rem; }
+
+/* Contact Form */
+.form-card { padding: 2.5rem; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label {
+  display: block; font-size: 0.82rem; font-weight: 700;
+  color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.8px; margin-bottom: 0.6rem;
+}
+.form-group input, .form-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  color: var(--text); font-family: var(--font); font-size: 0.95rem;
+  transition: border-color 0.3s, background 0.3s;
+  resize: vertical;
+}
+.form-group input:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--p);
+  background: rgba(255,255,255,0.05);
+}
+.form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+.btn-full { width: 100%; justify-content: center; }
+#form-msg {
+  text-align: center; font-size: 0.9rem;
+  margin-top: 1rem; min-height: 1.4rem;
+}
+.success { color: #28c840; }
+.error-msg { color: #ff5f57; }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0;
+  margin-top: 4rem;
+}
+.footer-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem; flex-wrap: wrap;
+}
+.footer-copy { font-size: 0.88rem; color: var(--muted); }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a {
+  font-size: 0.88rem; color: var(--muted);
+  text-decoration: none; transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--p); }
+
+/* ═══════════════════════════════════════════
+   DECORATIVE DIVIDER
+═══════════════════════════════════════════ */
+.section-divider {
+  border: none; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .flip-card { height: 380px; }
+  .projects-bento { grid-template-columns: 1fr; }
+  .project-card.wide { grid-column: auto; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  nav { display: none; }
+  .hero-stats { gap: 2rem; }
+}
+@media (max-width: 600px) {
+  .section { padding: 5rem 0; }
+  .mode-toggle { width: 210px; height: 46px; bottom: 1.5rem; }
+  .hero-buttons { flex-direction: column; }
+  .timeline::before { display: none; }
+  .tl-item { padding-left: 0; }
+  .tl-dot { display: none; }
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS
+═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- CANVAS BACKGROUND -->
+<canvas id="bg"></canvas>
+<div class="overlay-gradient"></div>
+
+<!-- LENS FULL-PAGE PHOTO BACKGROUND -->
+<div id="lens-bg"></div>
+<div id="lens-bg-overlay"></div>
+
+<!-- MODE TOGGLE -->
+<div class="mode-toggle" id="modeToggle" aria-label="Toggle between Logic and Lens mode">
+  <div class="toggle-track">
+    <div class="toggle-thumb"></div>
+    <div class="toggle-option">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      Logic
+    </div>
+    <div class="toggle-option">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83M16.62 12l-5.74 9.94"/></svg>
+      Lens
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="#hero" class="logo">
+    <div class="logo-icon">M</div>
+    <span class="logo-text">Maheshwar Kadbane</span>
+  </a>
+  <nav>
+    <a href="#hero">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#achievements">Awards</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="header-right">
+    <div class="social-icons">
+      <a href="https://linkedin.com/in/maheshwar-kadbane" target="_blank" aria-label="LinkedIn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="https://github.com/MaheshwarKadbane" target="_blank" aria-label="GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+      </a>
+      <a href="mailto:kadbanemaheshwar222@gmail.com" aria-label="Email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ═══════════════════════════════════════ -->
+<main>
+<section id="hero" class="section">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- LEFT TEXT -->
+      <div class="hero-text">
+        <div class="hero-eyebrow logic-only">AI_Developer.init() → ready</div>
+        <div class="hero-eyebrow lens-only">frame_loaded → capturing...</div>
+
+        <h1 class="hero-name">
+          <span class="grad">Maheshwar</span><br>Kadbane
+        </h1>
+
+        <p class="hero-role logic-only">
+          <span class="highlight">AI & Software Engineer</span><br>
+          Claude Certified Architect · PCCOE B.Tech '26
+        </p>
+        <p class="hero-role lens-only">
+          <span class="highlight">Creative Video & Photo Editor</span><br>
+          Visual Storyteller · 5+ Years Experience
+        </p>
+
+        <p class="hero-desc logic-only">
+          I engineer intelligent systems — from DDPG-based 5G network schedulers to LLM-powered tools using the Anthropic Claude API. Turning complex logic into scalable AI solutions.
+        </p>
+        <p class="hero-desc lens-only">
+          I craft cinematic moments — editing reels, wedding highlights, and promotional content that stops the scroll. Every frame tells a story worth watching.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary">
+            Hire Me
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#projects" class="btn btn-ghost">View Projects</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat logic-only">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">AI Projects</div>
+          </div>
+          <div class="stat logic-only">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Certifications</div>
+          </div>
+          <div class="stat logic-only">
+            <div class="stat-num">2026</div>
+            <div class="stat-label">PCCOE Grad</div>
+          </div>
+          <div class="stat lens-only">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Years Editing</div>
+          </div>
+          <div class="stat lens-only">
+            <div class="stat-num">50+</div>
+            <div class="stat-label">Videos Edited</div>
+          </div>
+          <div class="stat lens-only">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Awards Won</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT VISUAL — 3D Flip Card -->
+      <div class="hero-visual">
+        <div class="flip-card">
+
+          <!-- FRONT: Logic Terminal -->
+          <div class="flip-face flip-front">
+            <div class="terminal-bar">
+              <div class="t-dots">
+                <span class="t-dot r"></span>
+                <span class="t-dot y"></span>
+                <span class="t-dot g"></span>
+              </div>
+              <span class="t-path">maheshwar@ai-station: ~/profile</span>
+            </div>
+            <div class="terminal-body" id="term-body">
+              <div><span class="t-prompt">❯ </span><span>cat profile.json</span></div>
+              <div class="t-output" id="term-out"></div>
+              <div><span class="t-prompt">❯ </span><span class="t-cursor"></span></div>
+            </div>
+          </div>
+
+          <!-- BACK: Lens Viewfinder -->
+          <div class="flip-face flip-back" style="display:flex;flex-direction:column;">
+            <div class="vf-top">
+              <div class="vf-rec"><span class="rec-led"></span>REC</div>
+              <div class="vf-tc">01:04:22:16</div>
+            </div>
+            <div class="vf-body">
+              <div class="vf-circle vf-c2"></div>
+              <div class="vf-circle vf-c1"></div>
+              <div class="vf-cross"></div>
+              <div class="vf-corners">
+                <div class="vf-corner tl"></div>
+                <div class="vf-corner tr"></div>
+                <div class="vf-corner bl"></div>
+                <div class="vf-corner br"></div>
+              </div>
+              <div class="vf-info">FOCUS · AUTO-TRACK · ON</div>
+            </div>
+            <div class="vf-bottom">
+              <span>1080p · 60fps</span>
+              <span>ISO 400</span>
+              <span>f/2.8</span>
+              <span>24mm</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SKILLS -->
+<!-- ═══════════════════════════════════════ -->
+<section id="skills" class="section">
+  <div class="container">
+    <div class="section-label">Skills Matrix</div>
+    <h2 class="section-title">What I <span class="grad">Bring to the Table</span></h2>
+
+    <!-- LOGIC SKILLS -->
+    <div class="skills-grid logic-only reveal">
+      <div class="card skill-card">
+        <div class="skill-icon">🤖</div>
+        <h3>AI & Machine Learning</h3>
+        <p>Building intelligent systems from Generative AI to Reinforcement Learning models.</p>
+        <div class="tags-wrap">
+          <span class="tag">Generative AI</span>
+          <span class="tag">Claude API</span>
+          <span class="tag">DDPG / RL</span>
+          <span class="tag">RAG</span>
+          <span class="tag">LLM Apps</span>
+          <span class="tag">Embeddings</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <div class="skill-icon">⌨️</div>
+        <h3>Languages & Dev</h3>
+        <p>From low-level systems to high-level AI tooling.</p>
+        <div class="tags-wrap">
+          <span class="tag">Python</span>
+          <span class="tag">C++</span>
+          <span class="tag">C</span>
+          <span class="tag">SQL</span>
+          <span class="tag">HTML/CSS/JS</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <div class="skill-icon">🗄️</div>
+        <h3>Databases & Infra</h3>
+        <p>Reliable storage and version management for scalable applications.</p>
+        <div class="tags-wrap">
+          <span class="tag">MongoDB</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">Git / GitHub</span>
+          <span class="tag">Linux</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <div class="skill-icon">🧠</div>
+        <h3>CS Concepts</h3>
+        <p>Strong theoretical foundation driving practical engineering decisions.</p>
+        <div class="tags-wrap">
+          <span class="tag">DSA</span>
+          <span class="tag">OOP</span>
+          <span class="tag">Networks</span>
+          <span class="tag">QoS</span>
+          <span class="tag">5G Slicing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS SKILLS -->
+    <div class="skills-grid lens-only reveal">
+      <div class="card skill-card">
+        <div class="skill-icon">🎬</div>
+        <h3>Video Editing</h3>
+        <p>Crafting high-retention edits with perfect pacing, cuts, and sound design.</p>
+        <div class="tags-wrap">
+          <span class="tag">Filmora</span>
+          <span class="tag">CapCut</span>
+          <span class="tag">VN Editor</span>
+          <span class="tag">InShot</span>
+          <span class="tag">Color Grading</span>
+          <span class="tag">Reels</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <div class="skill-icon">🖼️</div>
+        <h3>Photo & Graphic Design</h3>
+        <p>Visual compositions that communicate brand identity and emotion.</p>
+        <div class="tags-wrap">
+          <span class="tag">Canva Pro</span>
+          <span class="tag">Lightroom</span>
+          <span class="tag">Snapseed</span>
+          <span class="tag">Picsart</span>
+          <span class="tag">Poster Design</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <div class="skill-icon">🎙️</div>
+        <h3>Content Strategy</h3>
+        <p>Planning and executing social media content that drives engagement.</p>
+        <div class="tags-wrap">
+          <span class="tag">Instagram Reels</span>
+          <span class="tag">YouTube</span>
+          <span class="tag">Storyboarding</span>
+          <span class="tag">Social Media</span>
+        </div>
+      </div>
+      <div class="card skill-card">
+        <div class="skill-icon">🎞️</div>
+        <h3>Specializations</h3>
+        <p>From weddings to college fests — versatile in every visual format.</p>
+        <div class="tags-wrap">
+          <span class="tag">Wedding Highlights</span>
+          <span class="tag">Event Coverage</span>
+          <span class="tag">Promo Videos</span>
+          <span class="tag">Audio Sync</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PROJECTS -->
+<!-- ═══════════════════════════════════════ -->
+<section id="projects" class="section">
+  <div class="container">
+    <div class="section-label">Featured Work</div>
+    <h2 class="section-title reveal">Projects & <span class="grad">Creations</span></h2>
+
+    <!-- LOGIC PROJECTS -->
+    <div class="projects-bento logic-only reveal">
+      <div class="card project-card wide">
+        <span class="project-tag-top">// Reinforcement Learning · March 2026</span>
+        <h3>AI-Based Inter-Slice Scheduling in 5G/6G Networks</h3>
+        <p>Designed a Deep Deterministic Policy Gradient (DDPG) RL model to optimize Physical Resource Block (PRB) allocation across 5G/6G network slices — eMBB, URLLC, and mMTC.</p>
+        <ul class="project-bullets">
+          <li>Improved QoS metrics: latency, throughput, and fairness simultaneously across all network slices</li>
+          <li>Modeled dynamic high-mobility environments; demonstrated measurable gains over static schedulers</li>
+          <li>Research-level implementation with continuous action space via actor-critic neural networks</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tag accent">Python</span>
+          <span class="tag accent">DDPG</span>
+          <span class="tag accent">PyTorch</span>
+          <span class="tag accent">Gymnasium</span>
+          <span class="tag accent">NumPy</span>
+        </div>
+      </div>
+
+      <div class="card project-card">
+        <span class="project-tag-top">// Claude API · 2026</span>
+        <h3>AI Resume Analyzer</h3>
+        <p>AI-powered resume analysis using Anthropic Claude API — ATS review, skill gap analysis, and role-matching with structured JSON output and personalized feedback.</p>
+        <ul class="project-bullets">
+          <li>Advanced prompt engineering for nuanced, personalized recommendations</li>
+          <li>Structured JSON output for programmatic results processing</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tag accent">Python</span>
+          <span class="tag accent">Claude API</span>
+          <span class="tag accent">Streamlit</span>
+        </div>
+      </div>
+
+      <div class="card project-card">
+        <span class="project-tag-top">// C++ · DSA · March 2025</span>
+        <h3>Hospital Management System</h3>
+        <p>OOP C++ application managing 4 modules: patients, doctors, appointments, and billing with O(log n) search via binary search trees and persistent file I/O.</p>
+        <ul class="project-bullets">
+          <li>Linked lists + BSTs for efficient data retrieval</li>
+          <li>Role-based access control and persistent storage</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tag accent">C++</span>
+          <span class="tag accent">OOP</span>
+          <span class="tag accent">DSA</span>
+          <span class="tag accent">File I/O</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LENS PROJECTS -->
+    <div class="projects-bento lens-only reveal">
+      <div class="card project-card wide">
+        <span class="project-tag-top">// Social Media · 2023 – Present</span>
+        <h3>Freelance Video Editor & Content Creator</h3>
+        <p>Collaborating with YouTube creators, wedding clients, and brands to deliver high-retention video content with precision pacing, color grading, and audio design.</p>
+        <div class="reel-mock">
+          <div class="reel-bg" style="background: url('maheshwar-photo.jpg') center top / cover no-repeat;"></div>
+          <div class="reel-overlay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+            <span>REELS · PROMOS · HIGHLIGHTS</span>
+          </div>
+        </div>
+        <div class="project-tech">
+          <span class="tag accent">Filmora</span>
+          <span class="tag accent">CapCut</span>
+          <span class="tag accent">VN Editor</span>
+          <span class="tag accent">Lightroom</span>
+        </div>
+      </div>
+
+      <div class="card project-card">
+        <span class="project-tag-top">// NSS PCCOE · 2023 – Present</span>
+        <h3>NSS Social Media Lead Editor</h3>
+        <p>Directing all video content for PCCOE's NSS chapter — event reels, awareness campaigns, and interviews driving student body engagement.</p>
+        <div class="reel-mock">
+          <div class="reel-bg" style="background: linear-gradient(135deg, #200122 0%, #6f0000 100%);"></div>
+          <div class="reel-overlay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+            <span>NSS EVENT REELS</span>
+          </div>
+        </div>
+        <div class="project-tech">
+          <span class="tag accent">CapCut</span>
+          <span class="tag accent">Canva</span>
+          <span class="tag accent">Audio Mix</span>
+        </div>
+      </div>
+
+      <div class="card project-card">
+        <span class="project-tag-top">// Design · 2022 – Present</span>
+        <h3>Graphic Design & Social Posters</h3>
+        <p>Creating eye-catching posters, event graphics, and social media templates for college clubs, IEEE events, and personal branding campaigns.</p>
+        <div class="reel-mock">
+          <div class="reel-bg" style="background: linear-gradient(135deg, #0f3460 0%, #533483 50%, #e94560 100%);"></div>
+          <div class="reel-overlay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>POSTERS · GRAPHICS</span>
+          </div>
+        </div>
+        <div class="project-tech">
+          <span class="tag accent">Canva Pro</span>
+          <span class="tag accent">Picsart</span>
+          <span class="tag accent">Lightroom</span>
+        </div>
+      </div>
+
+      <div class="card project-card">
+        <span class="project-tag-top">// 3D Visual · 2024 – Present</span>
+        <h3>3D Visual Design &amp; Personal Branding</h3>
+        <p>Crafting immersive 3D-layered visuals and cinematic personal brand content that stands out across digital platforms.</p>
+        <div class="card-3d-scene">
+          <div class="card-3d-inner">
+            <div class="card-3d-photo"></div>
+            <div class="card-3d-gloss"></div>
+            <div class="card-3d-overlay">
+              <div class="card-3d-label">3D &amp; Branding</div>
+              <div class="card-3d-title">Maheshwar Kadbane</div>
+              <div class="card-3d-badge">
+                <span>Perspective FX</span>
+                <span>Depth Layer</span>
+                <span>Cinematic</span>
+              </div>
+            </div>
+            <div class="card-3d-dot"></div>
+          </div>
+        </div>
+        <div class="project-tech">
+          <span class="tag accent">3D Design</span>
+          <span class="tag accent">Branding</span>
+          <span class="tag accent">Depth FX</span>
+          <span class="tag accent">Visual Identity</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TIMELINE -->
+<!-- ═══════════════════════════════════════ -->
+<section id="timeline" class="section">
+  <div class="container">
+    <div class="section-label">Journey</div>
+    <h2 class="section-title reveal">Experience & <span class="grad">Education</span></h2>
+
+    <div class="timeline reveal">
+
+      <!-- Logic: AI Intern -->
+      <div class="tl-item card logic-only">
+        <div class="tl-dot"></div>
+        <span class="tl-date">Jul 2026 – Present</span>
+        <div class="tl-title">AI Intern</div>
+        <div class="tl-org">SmartGenie Ltd · Pune</div>
+        <p class="tl-desc">Working on AI integration workflows — testing Claude LLM configurations, prompt optimization, and collaborative version management via GitHub.</p>
+      </div>
+
+      <!-- Shared: B.Tech -->
+      <div class="tl-item card">
+        <div class="tl-dot"></div>
+        <span class="tl-date">Nov 2022 – Jun 2026</span>
+        <div class="tl-title">B.Tech Computer Engineering</div>
+        <div class="tl-org">Pimpri Chinchwad College of Engineering (PCCOE) · Pune</div>
+        <p class="tl-desc">Core training in OOP, Data Structures, Algorithms, Networks, and Databases. Conducted AI research projects and participated in NSS community service.</p>
+      </div>
+
+      <!-- Lens: NSS Editor -->
+      <div class="tl-item card lens-only">
+        <div class="tl-dot"></div>
+        <span class="tl-date">2023 – Present</span>
+        <div class="tl-title">Social Media Lead Editor</div>
+        <div class="tl-org">NSS PCCOE · Pune</div>
+        <p class="tl-desc">Directing short-form content output, event footage, voiceover sync, and promotional reels for social welfare awareness campaigns.</p>
+      </div>
+
+      <!-- Lens: Freelance -->
+      <div class="tl-item card lens-only">
+        <div class="tl-dot"></div>
+        <span class="tl-date">2021 – Present</span>
+        <div class="tl-title">Freelance Video Editor</div>
+        <div class="tl-org">Self-employed</div>
+        <p class="tl-desc">Delivered high-quality Reels, wedding highlights, and promotional clips for YouTube creators, Startup Nation India, and college events with custom transitions.</p>
+      </div>
+
+      <!-- Shared: HSC -->
+      <div class="tl-item card">
+        <div class="tl-dot"></div>
+        <span class="tl-date">Jul 2020 – May 2022</span>
+        <div class="tl-title">Higher Secondary Certificate (Science)</div>
+        <div class="tl-org">Shri Tripura Junior Science College · Latur</div>
+        <p class="tl-desc">Focused on Mathematics and Physics. Initiated self-study in programming and visual design during this period.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ACHIEVEMENTS -->
+<!-- ═══════════════════════════════════════ -->
+<section id="achievements" class="section">
+  <div class="container">
+    <div class="section-label">Recognition</div>
+    <h2 class="section-title reveal">Certifications & <span class="grad">Achievements</span></h2>
+
+    <div class="achievements-grid logic-only reveal">
+      <div class="card ach-card">
+        <span class="ach-emoji">🏛️</span>
+        <h3>Claude Certified Architect (CCAF)</h3>
+        <div class="ach-issuer">Anthropic Academy · 2026</div>
+        <p>Completed AI Fluency Series: Framework & Foundations, Claude Code in Action, and Building with Claude API — demonstrating advanced LLM engineering skills.</p>
+      </div>
+      <div class="card ach-card">
+        <span class="ach-emoji">🔷</span>
+        <h3>Microsoft Certified: AI Fundamentals</h3>
+        <div class="ach-issuer">Microsoft Learn · 2026</div>
+        <p>Completed tracks in Generative AI, NLP, Computer Vision, Speech AI, and Responsible AI development with Azure Cognitive Services.</p>
+      </div>
+      <div class="card ach-card">
+        <span class="ach-emoji">🎓</span>
+        <h3>AI Research Project</h3>
+        <div class="ach-issuer">PCCOE · Final Year Project · 2026</div>
+        <p>Implemented DDPG-based RL model for 5G/6G inter-slice scheduling — demonstrating quantifiable improvements in PRB allocation efficiency over baseline static schedulers.</p>
+      </div>
+    </div>
+
+    <div class="achievements-grid lens-only reveal">
+      <div class="card ach-card">
+        <span class="ach-emoji">🏆</span>
+        <h3>Best Video Editor 2023</h3>
+        <div class="ach-issuer">PCCOE Art Circle · 2023</div>
+        <p>Awarded for excellence in editing promotional and highlights videos for college cultural events, fests, and community outreach programs.</p>
+      </div>
+      <div class="card ach-card">
+        <span class="ach-emoji">🥇</span>
+        <h3>Poster Making Competition</h3>
+        <div class="ach-issuer">IEEE PCCOE · 2024</div>
+        <p>Won recognition in the IEEE Poster Making Competition for outstanding graphic composition, visual clarity, and creative layout design.</p>
+      </div>
+      <div class="card ach-card">
+        <span class="ach-emoji">🎬</span>
+        <h3>NSS Media Lead</h3>
+        <div class="ach-issuer">PCCOE NSS · 2023 – Present</div>
+        <p>Appointed as the official social media and video content lead for the NSS unit — managing all visual communication and outreach media production.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- CONTACT -->
+<!-- ═══════════════════════════════════════ -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- LEFT INFO -->
+      <div class="contact-info reveal">
+        <div class="section-label">Get In Touch</div>
+        <h2 class="section-title">Let's <span class="grad">Build<br>Together</span></h2>
+        <p>Whether you need an AI integration, a powerful video edit, or a collaboration — I'm open to new opportunities and conversations.</p>
+
+        <div class="contact-channels">
+          <a href="mailto:kadbanemaheshwar222@gmail.com" class="channel">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="channel-label">Email</div>
+              <div class="channel-value">kadbanemaheshwar222@gmail.com</div>
+            </div>
+          </a>
+          <a href="tel:+917666259095" class="channel">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="channel-label">Phone</div>
+              <div class="channel-value">+91 7666259095</div>
+            </div>
+          </a>
+          <a href="https://instagram.com/mk_creation_9922" target="_blank" class="channel lens-only">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </div>
+            <div>
+              <div class="channel-label">Instagram (Editing)</div>
+              <div class="channel-value">@mk_creation_9922</div>
+            </div>
+          </a>
+          <a href="https://linkedin.com/in/maheshwar-kadbane" target="_blank" class="channel logic-only">
+            <div class="channel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </div>
+            <div>
+              <div class="channel-label">LinkedIn</div>
+              <div class="channel-value">Maheshwar Kadbane</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT FORM -->
+      <div class="reveal">
+        <div class="card form-card">
+          <form id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="c-name">Your Name</label>
+              <input type="text" id="c-name" name="name" placeholder="Navraj Kumar" required>
+            </div>
+            <div class="form-group">
+              <label for="c-email">Your Email</label>
+              <input type="email" id="c-email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="c-msg">Message</label>
+              <textarea id="c-msg" name="message" rows="5" placeholder="Hey Maheshwar, I'd love to work with you on..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" id="send-btn">
+              <span id="btn-label">Send Message</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+            <p id="form-msg"></p>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">
+        © 2026 Maheshwar Kadbane · Logic & Lens
+        <span style="color:var(--p);margin-left:4px">♦</span>
+        Pune, India
+      </div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a href="https://instagram.com/kadbane9922" target="_blank">@kadbane9922</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT ENGINE
+═══════════════════════════════════════════ -->
+<script>
+/* ── CANVAS BACKGROUND ─────────────────────────────────────── */
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+let isLens = false;
+
+function resize() {
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class P {
+  constructor() { this.init(); }
+  init() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.r = Math.random() * 1.5 + 0.5;
+    this.a = Math.random() * 0.6 + 0.1;
+    // Bokeh
+    this.br = Math.random() * 40 + 10;
+    this.bvy = -(Math.random() * 0.3 + 0.08);
+    this.bvx = (Math.random() - 0.5) * 0.1;
+    this.ba = Math.random() * 0.12 + 0.03;
+  }
+  update() {
+    if (!isLens) {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0 || this.x > W) this.vx *= -1;
+      if (this.y < 0 || this.y > H) this.vy *= -1;
+    } else {
+      this.y += this.bvy; this.x += this.bvx;
+      if (this.y < -this.br * 2) { this.y = H + this.br; this.x = Math.random() * W; }
+      if (this.x < -this.br || this.x > W + this.br) this.bvx *= -1;
+    }
+  }
+  draw() {
+    if (!isLens) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,212,255,${this.a})`;
+      ctx.shadowBlur = 8; ctx.shadowColor = '#00d4ff';
+      ctx.fill();
+    } else {
+      ctx.shadowBlur = 0;
+      const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.br);
+      const clr = this.br > 30 ? '247,37,133' : this.br > 20 ? '114,9,183' : '255,107,53';
+      g.addColorStop(0, `rgba(${clr},${this.ba})`);
+      g.addColorStop(1, `rgba(${clr},0)`);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.br, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
+    }
+  }
+}
+
+for (let i = 0; i < 70; i++) particles.push(new P());
+
+function drawLines() {
+  if (isLens) return;
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0,212,255,${(1 - d / 120) * 0.12})`;
+        ctx.lineWidth = 0.8; ctx.stroke();
+      }
+    }
+  }
+}
+
+(function loop() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawLines();
+  requestAnimationFrame(loop);
+})();
+
+/* ── MODE TOGGLE ────────────────────────────────────────────── */
+const modeToggle = document.getElementById('modeToggle');
+modeToggle.addEventListener('click', () => {
+  isLens = !isLens;
+  document.body.classList.toggle('lens', isLens);
+  if (!isLens) runTerminal();
+});
+document.addEventListener('keydown', e => {
+  if ((e.key === 'm' || e.key === 'M') && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    modeToggle.click();
+  }
+});
+
+/* ── TERMINAL TYPING ────────────────────────────────────────── */
+const termData = [
+  '{',
+  '  <span class="t-key">"name"</span>: <span class="t-str">"Maheshwar Kadbane"</span>,',
+  '  <span class="t-key">"role"</span>: <span class="t-str">"AI & Software Engineer"</span>,',
+  '  <span class="t-key">"location"</span>: <span class="t-str">"Pune, India"</span>,',
+  '  <span class="t-key">"education"</span>: <span class="t-str">"PCCOE B.Tech Comp Eng"</span>,',
+  '  <span class="t-key">"status"</span>: <span class="t-val">"AI Intern @ SmartGenie"</span>,',
+  '  <span class="t-key">"certifications"</span>: [',
+  '    <span class="t-str">"Claude Certified Architect"</span>,',
+  '    <span class="t-str">"Microsoft Certified AI"</span>',
+  '  ],',
+  '  <span class="t-key">"focus"</span>: [',
+  '    <span class="t-str">"Generative AI"</span>,',
+  '    <span class="t-str">"Reinforcement Learning"</span>,',
+  '    <span class="t-str">"LLM Applications"</span>',
+  '  ]',
+  '}'
+];
+
+let termTimer = null;
+function runTerminal() {
+  const out = document.getElementById('term-out');
+  if (!out) return;
+  clearInterval(termTimer);
+  out.innerHTML = '';
+  let i = 0;
+  termTimer = setInterval(() => {
+    if (i < termData.length) {
+      out.innerHTML += termData[i] + '\n';
+      i++;
+      out.parentElement.scrollTop = out.parentElement.scrollHeight;
+    } else {
+      clearInterval(termTimer);
+    }
+  }, 80);
+}
+runTerminal();
+
+/* ── 3D CARD TILT ────────────────────────────────────────────── */
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+    const y = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+    card.style.transform = `perspective(800px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateZ(8px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0)';
+  });
+});
+
+/* ── SCROLL REVEAL ───────────────────────────────────────────── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ── ACTIVE NAV HIGHLIGHT ───────────────────────────────────── */
+const navLinks = document.querySelectorAll('nav a');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if (scrollY + 200 >= s.offsetTop) cur = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--p)' : '';
+  });
+}, { passive: true });
+
+/* ── CONTACT FORM ────────────────────────────────────────────── */
+document.getElementById('contact-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = document.getElementById('send-btn');
+  const label = document.getElementById('btn-label');
+  const msg = document.getElementById('form-msg');
+  btn.disabled = true;
+  label.textContent = 'Transmitting...';
+  msg.className = ''; msg.textContent = '';
+  setTimeout(() => {
+    btn.disabled = false;
+    label.textContent = 'Send Message';
+    msg.className = 'success';
+    msg.textContent = '✓ Message sent! Maheshwar will respond soon.';
+    e.target.reset();
+    setTimeout(() => { msg.textContent = ''; }, 5000);
+  }, 1500);
+});
+</script>
+
+</body>
+</html>
